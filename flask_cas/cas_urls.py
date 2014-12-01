@@ -1,8 +1,12 @@
+# -*- coding: utf-8 -*-
 """
 flask_cas.cas_urls
 
 Functions for creating urls to access CAS.
 """
+
+from __future__ import (with_statement, print_function, division,
+                        unicode_literals, absolute_import)
 
 from functools import reduce
 
@@ -14,6 +18,7 @@ except ImportError:
     from urllib.parse import quote
     from urllib.parse import urljoin
     from urllib.parse import urlencode
+
 
 def create_url(base, path=None, *query):
     """ Create a url.
@@ -52,7 +57,8 @@ def create_url(base, path=None, *query):
     # seperated string.
     if isinstance(path, list):
         path = filter(lambda x: bool(x), path)
-        path = reduce(lambda l, r: '{}/{}'.format(l.rstrip('/'), r.lstrip('/')), path)
+        path = reduce(lambda l, r: '{}/{}'.format(l.rstrip('/'),
+            r.lstrip('/')), path)
     # Add the path to the url if there is something to add.
     if path:
         url = urljoin(url, quote(path))
@@ -63,8 +69,8 @@ def create_url(base, path=None, *query):
     return url
 
 
-def create_cas_login_url(cas_url,  cas_route_prefix, service, renew=None,
-                         gateway=None, method=None):
+def create_cas_login_url(cas_url, cas_route_prefix, service, renew=None,
+     gateway=None, method=None):
     """ Create a CAS login URL .
 
     Keyword arguments:
@@ -119,7 +125,7 @@ def create_cas_logout_url(cas_url, cas_route_prefix, url=None, cas_version='1'):
 
 
 def create_cas_validate_url(cas_url, cas_route_prefix, service, ticket,
-                            renew=None):
+                            renew=None, **kwargs):
     """ Create a CAS validate URL.
 
     Keyword arguments:
@@ -136,7 +142,9 @@ def create_cas_validate_url(cas_url, cas_route_prefix, service, ticket,
     ...     'http://localhost:5000/login',
     ...     'ST-58274-x839euFek492ou832Eena7ee-cas'
     ... )
-    'http://sso.pdx.edu/cas/validate?service=http%3A%2F%2Flocalhost%3A5000%2Flogin&ticket=ST-58274-x839euFek492ou832Eena7ee-cas'
+    'http://sso.pdx.edu/cas/validate?
+        service=http%3A%2F%2Flocalhost%3A5000%2Flogin&
+        ticket=ST-58274-x839euFek492ou832Eena7ee-cas'
     """
     return create_url(
         cas_url,
@@ -146,9 +154,10 @@ def create_cas_validate_url(cas_url, cas_route_prefix, service, ticket,
         ('renew', renew),
     )
 
+
 def create_cas_serviceValidate_url(cas_url, cas_route_prefix, service, ticket,
-                                   pgtUrl=None, renew=None):
-    
+    pgtUrl=None, renew=None):
+
     """ Create a CAS serviceValidate URL.
 
     Keyword arguments:
@@ -166,7 +175,9 @@ def create_cas_serviceValidate_url(cas_url, cas_route_prefix, service, ticket,
     ...     'http://localhost:5000/login',
     ...     'ST-58274-x839euFek492ou832Eena7ee-cas'
     ... )
-    'http://sso.pdx.edu/cas/serviceValidate?service=http%3A%2F%2Flocalhost%3A5000%2Flogin&ticket=ST-58274-x839euFek492ou832Eena7ee-cas'
+    'http://sso.pdx.edu/cas/serviceValidate?
+        service=http%3A%2F%2Flocalhost%3A5000%2Flogin&
+        ticket=ST-58274-x839euFek492ou832Eena7ee-cas'
     """
     return create_url(
         cas_url,
@@ -177,9 +188,10 @@ def create_cas_serviceValidate_url(cas_url, cas_route_prefix, service, ticket,
         ('renew', renew),
     )
 
+
 def create_cas_proxyValidate_url(cas_url, cas_route_prefix, service, ticket,
-                                 pgtUrl=None, renew=None):
-    
+     pgtUrl=None, renew=None):
+
     """ Create a CAS proxyValidate URL.
 
     Keyword arguments:
@@ -197,7 +209,9 @@ def create_cas_proxyValidate_url(cas_url, cas_route_prefix, service, ticket,
     ...     'http://localhost:5000/login',
     ...     'ST-58274-x839euFek492ou832Eena7ee-cas'
     ... )
-    'http://sso.pdx.edu/cas/proxyValidate?service=http%3A%2F%2Flocalhost%3A5000%2Flogin&ticket=ST-58274-x839euFek492ou832Eena7ee-cas'
+    'http://sso.pdx.edu/cas/proxyValidate?
+        service=http%3A%2F%2Flocalhost%3A5000%2Flogin&
+        ticket=ST-58274-x839euFek492ou832Eena7ee-cas'
     """
     return create_url(
         cas_url,
@@ -207,6 +221,7 @@ def create_cas_proxyValidate_url(cas_url, cas_route_prefix, service, ticket,
         ('pgtUrl', pgtUrl),
         ('renew', renew),
     )
+
 
 def create_cas_proxy_url(cas_url, cas_route_prefix, pgt, targetService):
 
@@ -225,7 +240,9 @@ def create_cas_proxy_url(cas_url, cas_route_prefix, pgt, targetService):
     ...     'PGT-490649-W81Y9Sa2vTM7hda7xNTkezTbVge4CUsybAr',
     ...     'http://www.service.com',
     ... )
-    'http://sso.pdx.edu/cas/proxy?pgt=PGT-490649-W81Y9Sa2vTM7hda7xNTkezTbVge4CUsybAr&targetService=http%3A%2F%2Fwww.service.com'
+    'http://sso.pdx.edu/cas/proxy?
+        pgt=PGT-490649-W81Y9Sa2vTM7hda7xNTkezTbVge4CUsybAr&
+        targetService=http%3A%2F%2Fwww.service.com'
     """
     return create_url(
         cas_url,
@@ -233,6 +250,7 @@ def create_cas_proxy_url(cas_url, cas_route_prefix, pgt, targetService):
         ('pgt', pgt),
         ('targetService', targetService),
     )
+
 
 def create_cas_samIValidate_url(cas_url, cas_route_prefix, target):
 

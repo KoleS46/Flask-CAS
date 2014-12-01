@@ -23,13 +23,13 @@ if __name__ == "__main__":
             CAS
             ===
 
-            The Central Authentication Service (CAS) is a single sign-on 
-            protocol for the web. Its purpose is to permit a user to access 
-            multiple applications while providing their credentials (such as 
-            userid and password) only once. It also allows web applications 
-            to authenticate users without gaining access to a user's security 
-            credentials, such as a password. The name CAS also refers to a 
-            software package that implements this protocol. 
+            The Central Authentication Service (CAS) is a single sign-on
+            protocol for the web. Its purpose is to permit a user to access
+            multiple applications while providing their credentials (such as
+            userid and password) only once. It also allows web applications
+            to authenticate users without gaining access to a user's security
+            credentials, such as a password. The name CAS also refers to a
+            software package that implements this protocol.
 
             (Very short) Setup Tutorial
             ===========================
@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
             .. code:: python
 
-                app.config['CAS_SERVER'] = 'https://sso.pdx.edu' 
+                app.config['CAS_SERVER'] = 'https://sso.pdx.edu'
 
                 app.config['CAS_AFTER_LOGIN'] = 'route_root'
 
@@ -73,6 +73,7 @@ if __name__ == "__main__":
         ],
         install_requires = [
             "Flask",
+            "Flask-Cache"
         ],
         test_requires = [
             "Nose",

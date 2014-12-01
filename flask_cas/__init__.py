@@ -27,14 +27,15 @@ class CAS(object):
 
     Optional Configs:
 
-    |Key                      | Default        |
-    |-------------------------|----------------|
-    |CAS_TOKEN_SESSION_KEY    | _CAS_TOKEN     |
-    |CAS_USERNAME_SESSION_KEY | CAS_USERNAME   |
-    |CAS_ATTRIBUTES_SESSION_KEY | CAS_ATTRIBUTES|
-    |CAS_ROUTE_PREFIX         | '/cas'         |
-    |CAS_LOGOUT_RETURN_URL    | None           |
-    |CAS_VERSION              | '1'            |
+    |Key                        | Default        |
+    |-------------------------  |----------------|
+    |CAS_TOKEN_SESSION_KEY      | _CAS_TOKEN     |
+    |CAS_USERNAME_SESSION_KEY   | CAS_USERNAME   |
+    |CAS_ATTRIBUTES_SESSION_KEY | CAS_ATTRIBUTES |
+    |CAS_ROUTE_PREFIX           | '/cas'         |
+    |CAS_LOGOUT_RETURN_URL      | None           |
+    |CAS_VERSION                | '1'            |
+    |CAS_PROXY_CALLBACK         | False          |
     """
 
     def __init__(self, app=None, url_prefix=None):
@@ -45,11 +46,14 @@ class CAS(object):
     def init_app(self, app, url_prefix=None):
         # Configuration defaults
         app.config.setdefault('CAS_TOKEN_SESSION_KEY', '_CAS_TOKEN')
+        app.config.setdefault('CAS_PROXY_GRANTING_TICKET',
+            '_CAS_PROXY_GRANTING_TOKEN')
         app.config.setdefault('CAS_USERNAME_SESSION_KEY', 'CAS_USERNAME')
         app.config.setdefault('CAS_ATTRIBUTES_SESSION_KEY', 'CAS_ATTRIBUTES')
         app.config.setdefault('CAS_ROUTE_PREFIX', 'cas')
         app.config.setdefault('CAS_LOGOUT_RETURN_URL', None)
         app.config.setdefault('CAS_VERSION', '1')
+        app.config.setdefault('CAS_PROXY_CALLBACK', False)
         # Register Blueprint
         app.register_blueprint(routing.blueprint, url_prefix=url_prefix)
 
@@ -76,6 +80,11 @@ class CAS(object):
     def token(self):
         return flask.session.get(
             self.app.config['CAS_TOKEN_SESSION_KEY'], None)
+
+    @property
+    def proxy_granting_token(self):
+        return flask.session.get(
+            self.app.config['CAS_PROXY_GRANTING_TICKET'], None)
 
     @property
     def attributes(self):
